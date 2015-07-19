@@ -11,11 +11,12 @@ using namespace std;
 
 #define PORCENTAJE 10 //porcentaje de fraude
 
-struct registro{
-char celular[10];
-char CURP[18];
-char partido[3];
-char opcion[1];
+struct registro
+{
+	char celular[10];
+	char CURP[18];
+	char partido[3];
+	char opcion[1];
 };
 
 int main(int argc, char *argv[]){
@@ -45,8 +46,8 @@ partidos[8] = "HUM";
 partidos[9] = "ENC";
 
 
-if(argc != 4){
-printf("Forma de uso: programa numero_registros direccion_servidor OPCION\n");
+if(argc != 5){
+printf("Forma de uso: programa numero_registros puerto ip opcion_123\n");
 exit(0);
 }
 

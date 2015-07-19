@@ -55,6 +55,7 @@ void *ReciboUDPCliente(void*)
 
    	while(1)
    	{
+   		sem_wait(&mutex1);
       	if(socketudpcliente.recibe(pr))
       	{
 	        printf("recibido: %d",j);
@@ -64,6 +65,8 @@ void *ReciboUDPCliente(void*)
 	        pilaregistro.push_back(Recreg);
 	        j++;
       	}
+      	cout<<"sale";
+      	sem_post(&mutex2);
    	}
 }
 
@@ -74,30 +77,27 @@ void *EnvioServerCentralizado(void*)
    	while(1)
    	{
       	sem_wait(&mutex2);
-      	while(1)
-		{
-			while (!pilaregistro.empty())
-			{  		
-				cout<<"EnvioServerCentralizado";
-				envPila=pilaregistro.back();
+		while (!pilaregistro.empty())
+		{  		
+			cout<<"EnvioServerCentralizado";
+			envPila=pilaregistro.back();
 
-				PaqueteDatagrama paquete((char *)&envPila, sizeof(registro),ip, puerto2);
-				//PaqueteDatagrama paqueteR(tamr);
-				//Estructura para reenvio de paquetes 
+			PaqueteDatagrama paquete((char *)&envPila, sizeof(registro),ip, puerto2);
+			//PaqueteDatagrama paqueteR(tamr);
+			//Estructura para reenvio de paquetes 
 
-			    //struct timeval tiempoFuera;
-			    //bzero((char *)&tiempoFuera, sizeof(struct timeval));
-			    //tiempoFuera.tv_sec = 0;
-			    //tiempoFuera.tv_usec = 500000;
+		    //struct timeval tiempoFuera;
+		    //bzero((char *)&tiempoFuera, sizeof(struct timeval));
+		    //tiempoFuera.tv_sec = 0;
+		    //tiempoFuera.tv_usec = 500000;
 
-				//socketudpserverc.setTiempo(tiempoFuera);
-				
-		    	//Se envia el paquete
-				socketudpserverc.envia(paquete);
-		    	pilaregistro.pop_back();
-		  	}
-		 }
-      
+			//socketudpserverc.setTiempo(tiempoFuera);
+			
+	    	//Se envia el paquete
+			socketudpserverc.envia(paquete);
+	    	pilaregistro.pop_back();
+		  }
+		 
       	sem_post(&mutex1);
    }
 }
@@ -123,7 +123,6 @@ void *ReciboServerCentralizado(void*)
 		}
 
       sleep(5);
-      sem_post(&mutex2);
    }
 }
 
@@ -137,10 +136,9 @@ int main(void)
    sem_init(&mutex2, 0, 0);
    
    /* Se crean dos hilos con atributos predeterminados */
-   
-   pthread_create(&th3, NULL, &ReciboUDPCliente, NULL);
+   pthread_create(&th1, NULL, &ReciboUDPCliente, NULL);
    pthread_create(&th2, NULL, &EnvioServerCentralizado, NULL);
-   pthread_create(&th1, NULL, &ReciboServerCentralizado, NULL);
+   pthread_create(&th3, NULL, &ReciboServerCentralizado, NULL);
    
    //printf("El hilo principal espera a sus hijos\n");
    //}
