@@ -13,9 +13,9 @@ using namespace std;
 
 struct registro
 {
-	char celular[10];
-	char CURP[18];
-	char partido[3];
+	char celular[11];
+	char CURP[19];
+	char partido[4];
 	char opcion[1];
 };
 
@@ -79,7 +79,6 @@ SocketDatagrama s1(puerto);
 
 cout<<"\n";
 
-
 switch(opcion){
 	case 1: //Opcion 1
 			for(j=0; j<n; j++){
@@ -94,14 +93,41 @@ switch(opcion){
 			//El telefono celular generado	
 			strcpy(reg1.celular, telefono);
 
+			//El numero de registro generado
+			//strcpy(reg1.num_registro, telefono);
+
 			for(i=0; i<10; i++){
 				telefono[i]=telefono[i]+17;
 			}
+			telefono[11]='\0';
 			strcpy(t, telefono);		
 			cout<<"\nreg1 celular "<<reg1.celular;			
 			
 			//La CURP
-			sprintf(curp, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c ", t[0], t[1], t[2], t[3],rand()%10 + 48, rand()%10 + 48, rand()%10 + 48,rand()%10 + 48, rand()%10 + 48, rand()%10 + 48, t[4], t[5], t[6], t[7], t[8], t[9],rand()%10 + 48, rand()%10 + 48);			
+			curp[0]=t[0];
+			curp[1]=t[1];
+			curp[2]=t[2];
+			curp[3]=t[3];
+			curp[4]=rand()%10 + 48;
+			curp[5]=rand()%10 + 48;
+			curp[6]=rand()%10 + 48;
+			curp[7]=rand()%10 + 48;
+			curp[8]=rand()%10 + 48;
+			curp[9]=rand()%10 + 48;
+			curp[10]=t[4];
+			curp[11]=t[5];
+			curp[12]=t[6];
+			curp[13]=t[7];
+			curp[14]=t[8];
+			curp[15]=t[9];
+			curp[16]=rand()%10 + 48;
+			curp[17]=rand()%10 + 48;
+			curp[18]='\0';
+
+			//sprintf(curp, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c ", t[0], t[1], t[2], t[3],rand()%10 + 48, rand()%10 + 48, 
+			//	rand()%10 + 48,rand()%10 + 48, rand()%10 + 48, rand()%10 + 48, t[4], t[5], t[6], t[7], t[8], t[9],rand()%10 + 48, 
+			//	rand()%10 + 48);			
+			//curp[20]='\0';
 			strcpy(reg1.CURP, curp);
 			cout<<"\nreg1.curp "<< reg1.CURP;
 			//El partido que se eligio
@@ -109,8 +135,11 @@ switch(opcion){
 			strcpy(reg1.partido, partidos[i]);
 			cout<<"\nreg1.partido "<<reg1.partido;
 			//La opcion de Fraude 
-			strcpy(reg1.opcion, opcionc);
-			cout<<"\nopcion: "<<reg1.opcion;
+			//strcpy(reg1.opcion, opcionc);
+			//cout<<"\nopcion: "<<reg1.opcion;
+			
+			//cout<<"\nnum_registro: "<<reg1.celular;
+
 
 			//Se crea el paquete a enviar el cual contiene la estructura con los datos previamente llenados de los registros
 			p= new PaqueteDatagrama((char *)&reg1, sizeof(registro), (char*)direccion_servidor, puerto);
@@ -141,17 +170,18 @@ switch(opcion){
 				strcpy(reg1.CURP, curp);
 				i = rand()%10;
 				strcpy(reg1.partido, partidos[i]);
-				
+				cout<<"\nreg1 celular "<<reg1.celular;	
+				cout<<"\nreg1.curp "<< reg1.CURP;
+				cout<<"\nreg1.partido "<<reg1.partido;
 				//opcion de fraude
-				strcpy(reg1.opcion, opcionc);
-			    cout<<"\nopcion: "<<reg1.opcion;
+				//strcpy(reg1.opcion, opcionc);
+			    //cout<<"\nopcion: "<<reg1.opcion;
 			    //Se envia el paquete 
 			    p= new PaqueteDatagrama((char *)&reg1, sizeof(registro), (char*)direccion_servidor, puerto );
 			    //Tamaño a enviar de cada paquete 32 bytes
 				cout<<"\nTamaño paquete: " << sizeof(registro);
 				//Se envia el datagrama;			
 				s1.envia(*p);
-
 				}
 		break;
 
@@ -178,6 +208,9 @@ switch(opcion){
 				//Se envia el paquete 
 			    p= new PaqueteDatagrama((char *)&reg1, sizeof(registro), (char*)direccion_servidor, puerto );
 			    //Tamaño a enviar de cada paquete 32 bytes
+			    cout<<"\nreg1 celular "<<reg1.celular;	
+				cout<<"\nreg1.curp "<< reg1.CURP;
+				cout<<"\nreg1.partido "<<reg1.partido;
 				cout<<"\nTamaño paquete: " << sizeof(registro);
 				//Se envia el datagrama;			
 				s1.envia(*p);
