@@ -12,6 +12,7 @@ APP.init = function () {
     APP.socket = io(APP.socketURL);
     APP.positionList = document.querySelector('#positions');
     APP.chartElement = document.querySelector('#chart-container figure');
+    APP.statusElement = document.querySelector('#votation-status');
 
     APP.searchForm = document.querySelector('#search form');
     APP.txtCURP = document.querySelector('#txt-curp');
@@ -30,6 +31,7 @@ APP.init = function () {
     APP.chart = new PieChart();
 
     APP.socket.on('update', function (data) {
+        APP.updateStatus(data.total);
         APP.updateParties(data.votes);
         APP.chart.update();
     });
@@ -58,6 +60,10 @@ APP.updateParties = function(votes) {
     });
 
     APP.positionList.innerHTML = elements.join('');
+}
+
+APP.updateStatus = function(total){
+    APP.statusElement.innerHTML = total;
 }
 
 APP.onSearch = function (e) {

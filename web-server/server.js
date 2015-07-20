@@ -34,7 +34,7 @@ var appendVote = function(vote){
 
 	votation.total++;
 
-	if(votes.has(vote.curp) && votes.has(vote.rfc)){
+	if(votes.has(vote.curp) || votes.has(vote.phone)){
 
 		votation.votes["FRD"]++;
 
@@ -70,24 +70,29 @@ udpServer.on("listening", function(){
 
 udpServer.on("message", function(msg, rinfo){
 
+	var res = new Buffer('OK');
+	
 	try{
+
+		if(msg.toString()==="OK")
+			return;
 
 		var vote = JSON.parse(msg.toString());
 		console.log("received message from: ", rinfo.address, ":", rinfo.port);
 
 		appendVote(vote);
+	}
+	catch(err){
+
+		console.log('ERROR', '_' + msg.toString() + '_'+ rinfo.host + '_', err);
+	}
+	finally{
 		
-		var res = new Buffer('OK');
 		var client = dgram.createSocket("udp4");
 
 		client.send(res, 0, res.length, rinfo.port, rinfo.host, function(err, bytes){
 			client.close();
 		});
-
-	}
-	catch(err)
-	{
-
 	}
 
 });
