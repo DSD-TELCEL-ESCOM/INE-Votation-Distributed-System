@@ -12,8 +12,6 @@
 #include <arpa/inet.h>
 #include "PaqueteDatagrama.h"
 #include "SocketDatagrama.h"
-#include <time.h>
-
 
 using namespace std;
 
@@ -32,7 +30,7 @@ struct registro
 
 vector<registro> pilaregistro;
 
-int puerto1=8000;
+int puerto1=7777;
 int puerto2=8888;
 
 char *ip="127.0.0.1";
@@ -43,30 +41,29 @@ SocketDatagrama socketudpserverc(puerto2);
 //Se crean los paquetes para envio y recepcion
 struct registro Envreg;
 struct registro Recreg;
-
-int contador=0;
-
 //struct registro envPila;
 int er=0;
 
 void *ReciboUDPCliente(void*)
 {
-	PaqueteDatagrama pr(sizeof(registro));
-	PaqueteDatagrama paquete((char *)&Envreg, sizeof(registro),ip, puerto1);
-
+	int numero;
+	//PaqueteDatagrama pr(sizeof(registro));
+	//PaqueteDatagrama paquete((char *)&Envreg, sizeof(registro),ip, puerto1);
+	PaqueteDatagrama pr(sizeof(int));
+	PaqueteDatagrama paquete((char *)&numero, sizeof(int),ip, 8000);
    	while(1)
    	{
    		sem_wait(&mutex1);
       	if(socketudpcliente.recibe(pr))
       	{
 	        //dir.s_addr = inet_addr(pr.obtieneDireccion()); //DUDA AQUI
-	        memcpy((char*)&Recreg, pr.obtieneDatos(), sizeof(Recreg));
-		    //pr.obtieneDatos();
-
+	        //memcpy((char*)&Recreg, pr.obtieneDatos(), sizeof(Recreg));
+	        memcpy((char*)&numero, pr.obtieneDatos(), sizeof(int));
+		    cout<<"Numero de angel"<<numero<<endl;
 	        cout << "Celular: " << Recreg.celular << endl;
 			cout << "Curp:  " << Recreg.CURP << endl;
 			cout << "Partido: " << Recreg.partido << endl;		    
-	        pilaregistro.push_back(Recreg);
+	        //pilaregistro.push_back(Recreg);
       	}
       	sem_post(&mutex2);
    	}
@@ -78,9 +75,7 @@ void *EnvioServerCentralizado(void*)
    	while(1)
    	{
       	sem_wait(&mutex2);
-      	//if(contador%2000==0)
-      	//	sleep(1);
-      	//contador++;
+      	
       	//cout<<pilaregistro.size();
 
 		//while (!pilaregistro.empty())
@@ -134,14 +129,7 @@ void *ReciboServerCentralizado(void*)
 
 int main(void)
 {
-   	pthread_t th1, th2, th3;
-
-   	//Estructura para reenvio de paquetes 
-	struct timeval tiempoFuera;
-	bzero((char *)&tiempoFuera, sizeof(struct timeval));
-	tiempoFuera.tv_sec = 0;
-	tiempoFuera.tv_usec = 50000; //milisegundos
-	socketudpserverc.setTiempo(tiempoFuera);
+   pthread_t th1, th2, th3;
 
    	bzero((char*)&Envreg, sizeof(struct registro));
 	bzero((char*)&Recreg, sizeof(struct registro));

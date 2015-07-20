@@ -1,5 +1,5 @@
 #ServidorUDPCentralizado: ServidorUDPCentralizado.cpp SocketDatagrama.o
-#	g++ ServidorUDPCentralizado.cpp SocketDatagrama.o PaqueteDatagrama.o -o ServidorUDPCentralizado
+#	g++ ServidorUDPCentralizado.cpp SocketDatagrama.o PaqueteDatagrama.o -o ServidorUDPCentralizado -lpthread 
 #ClienteRegistro: ClienteRegistro.cpp SocketDatagrama.o
 #	g++ ClienteRegistro.cpp SocketDatagrama.o PaqueteDatagrama.o -o clienteregistro
 ServidorUDP: ServidorUDP.cpp SocketDatagrama.o

@@ -47,7 +47,7 @@ partidos[9] = "ENC";
 
 
 if(argc != 5){
-printf("Forma de uso: programa numero_registros puerto ip opcion_123\n");
+printf("Forma de uso: programa numero_registros puerto ip opcion_123 num\n");
 exit(0);
 }
 
@@ -70,13 +70,13 @@ SocketDatagrama s1(puerto);
 //Confrimacion del puerto
 //cout<<"\nPuerto socket: "<< s1.getPuerto()<<endl;
 
-
+/*
 //Enviando el numero de registros al servidor para que se crea del lado del servidor un for que reciba hasta n mensajes
  pr= new PaqueteDatagrama((char*)&n, sizeof(&n), (char*)direccion_servidor, puerto );
  //Corrobora la direccion del servidor
  cout<<pr->obtieneDireccion();
  s1.envia(*pr);
-
+*/
 cout<<"\n";
 
 switch(opcion){
@@ -165,8 +165,31 @@ switch(opcion){
 				for(i=0; i<10; i++){
 					telefono[i]=telefono[i]+17;
 				}
+				telefono[11]='\0';
 				strcpy(t, telefono);
-				sprintf(curp, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c \n", t[0], t[1], t[2], t[3],rand()%10 + 48, rand()%10 + 48, rand()%10 + 48,rand()%10 + 48, rand()%10 + 48, rand()%10 +48, t[4], t[5], t[6], t[7], t[8], t[9],rand()%10 + 48, rand()%10 + 48);
+				//sprintf(curp, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c \n", t[0], t[1], t[2], t[3],rand()%10 + 48, rand()%10 + 48, rand()%10 + 48,rand()%10 + 48, rand()%10 + 48, rand()%10 +48, t[4], t[5], t[6], t[7], t[8], t[9],rand()%10 + 48, rand()%10 + 48);
+				
+				//La CURP
+				curp[0]=t[0];
+				curp[1]=t[1];
+				curp[2]=t[2];
+				curp[3]=t[3];
+				curp[4]=rand()%10 + 48;
+				curp[5]=rand()%10 + 48;
+				curp[6]=rand()%10 + 48;
+				curp[7]=rand()%10 + 48;
+				curp[8]=rand()%10 + 48;
+				curp[9]=rand()%10 + 48;
+				curp[10]=t[4];
+				curp[11]=t[5];
+				curp[12]=t[6];
+				curp[13]=t[7];
+				curp[14]=t[8];
+				curp[15]=t[9];
+				curp[16]=rand()%10 + 48;
+				curp[17]=rand()%10 + 48;
+				curp[18]='\0';
+
 				strcpy(reg1.CURP, curp);
 				i = rand()%10;
 				strcpy(reg1.partido, partidos[i]);
@@ -197,8 +220,30 @@ switch(opcion){
 				for(i=0; i<10; i++){
 					telefono[i]=telefono[i]+17;
 				}
+				telefono[11]='\0';
 				strcpy(t, telefono);
-				sprintf(curp, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", t[0], t[1], t[2], t[3],rand()%10 + 48, rand()%10 + 48, rand()%10 + 48,rand()%10 + 48, rand()%10 + 48, rand()%10 +48, t[4], t[5], t[6], t[7], t[8], t[9],rand()%10 + 48, rand()%10 + 48);
+				//sprintf(curp, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", t[0], t[1], t[2], t[3],rand()%10 + 48, rand()%10 + 48, rand()%10 + 48,rand()%10 + 48, rand()%10 + 48, rand()%10 +48, t[4], t[5], t[6], t[7], t[8], t[9],rand()%10 + 48, rand()%10 + 48);
+				//La CURP
+				curp[0]=t[0];
+				curp[1]=t[1];
+				curp[2]=t[2];
+				curp[3]=t[3];
+				curp[4]=rand()%10 + 48;
+				curp[5]=rand()%10 + 48;
+				curp[6]=rand()%10 + 48;
+				curp[7]=rand()%10 + 48;
+				curp[8]=rand()%10 + 48;
+				curp[9]=rand()%10 + 48;
+				curp[10]=t[4];
+				curp[11]=t[5];
+				curp[12]=t[6];
+				curp[13]=t[7];
+				curp[14]=t[8];
+				curp[15]=t[9];
+				curp[16]=rand()%10 + 48;
+				curp[17]=rand()%10 + 48;
+				curp[18]='\0';
+
 				if((rand()%100 +1) > PORCENTAJE){
 					strcpy(reg1.CURP, curp);
 				}

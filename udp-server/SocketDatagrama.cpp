@@ -129,7 +129,10 @@ void SocketDatagrama::printIP(){
 	}
 	
 	freeifaddrs(ifaddr);
-	
-	
-	return;
 }
+
+void SocketDatagrama::setTiempo(struct timeval tiempofuera)
+{
+   setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char*)&tiempofuera, sizeof(tiempofuera));
+}
+	

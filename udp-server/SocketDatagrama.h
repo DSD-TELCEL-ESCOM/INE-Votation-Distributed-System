@@ -29,6 +29,7 @@ public:
 	int getStatus();
 	int getPuerto();
 	static void printIP();
+	void setTiempo(struct timeval);
 private:
 	struct sockaddr_in direccionLocal;
 	struct sockaddr_in direccionForanea;
