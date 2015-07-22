@@ -26,6 +26,7 @@ Server that listens UDP request from votation and sends updates to **web clients
 
 - open `config.json` file
 - update `udp`, `http` and `express` default server settings
+- set `step` for the number of votes received before sending an update signal to the clients. The server also sends updates every second automatically.
 
 
 ```
@@ -41,7 +42,8 @@ Server that listens UDP request from votation and sends updates to **web clients
 	"express": {
 		"host": "0.0.0.0",
 		"port": 8081
-	}
+	},
+	"step": 1000
 }
 ```
 
